@@ -3,7 +3,7 @@
 Raw reads to differential expression, using 3 wild-type and 3 snf2 knock-out samples from the public study PRJEB5348 (ENA).
 
 ## Pipeline
-FastQC/MultiQC -> HISAT2 -> samtools -> featureCounts -> DESeq2 (R)
+FastQC/MultiQC -> HISAT2 -> samtools -> featureCounts -> DESeq2 (R) -> clusterProfiler (GO enrichment)
 
 Commands: `scripts/pipeline.sh` (WSL) and `scripts/analysis.R` (R, run from the repo root).
 Versions: HISAT2 2.2.1, featureCounts 2.0.3, samtools 1.13, MultiQC 1.12, DESeq2 1.52.0, R 4.6.2.
@@ -25,4 +25,14 @@ Versions: HISAT2 2.2.1, featureCounts 2.0.3, samtools 1.13, MultiQC 1.12, DESeq2
 Files: `results/yeast_deseq2_results.csv`, `figures/pca.png`, `figures/volcano.png`, `data/`.
 
 ## Limits
-Only 3 vs 3 samples, so less power than the full 48 vs 48 design. No functional enrichment yet.
+Only 3 vs 3 samples, so less power than the full 48 vs 48 design.
+
+## Functional enrichment (GO Biological Process)
+`scripts/enrichment.R` (clusterProfiler 4.20.3, org.Sc.sgd.db). Test set: the 284 strongly changed genes (adjusted p < 0.05, |log2FC| > 1; 211 down, 73 up). Background: all 5,403 tested genes, not the whole genome.
+- 55 terms enriched at adjusted p < 0.05, 19 after merging redundant terms
+- All of the signal comes from the down genes (73 terms); the 73 up genes give none, which may reflect low power for a short list
+- Broad terms: oxoacid metabolic process (42/282 genes vs 368/5,397 in the background, adjusted p 4.4e-4) and transmembrane transport (44/282 vs 446/5,397)
+- Sharper terms: fructose transmembrane transport (6 genes, all down: HXT2, HXT3, HXT4, HXT6, HXT7, HXK1) and IMP biosynthesis (6 genes)
+- This is an association, not proof that a pathway changes, and with 3 vs 3 samples these are hypotheses to test
+
+Files: `results/go_bp_enrichment*.csv`, `figures/go_bp_dotplot.png`.
