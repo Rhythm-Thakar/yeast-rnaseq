@@ -19,6 +19,7 @@ Versions: HISAT2 2.2.1, featureCounts 2.0.3, samtools 1.13, MultiQC 1.12, DESeq2
 - 95.4-97.3% overall alignment rate across the six samples
 - At adjusted p < 0.1: 249 genes up and 489 down in the mutant; 284 genes pass adjusted p < 0.05 and |log2 fold change| > 1
 - SNF2 (YOR290C) is strongly down in the mutant (log2 fold change -7.66, adjusted p 2.4e-22), as expected for the knock-out
+  Raw counts: 148, 220, 169 in wild type vs 2, 0, 2 in the mutant
 - PC1 (82% of variance) separates the two conditions
 
 Files: `results/yeast_deseq2_results.csv`, `figures/pca.png`, `figures/volcano.png`, `data/`.
